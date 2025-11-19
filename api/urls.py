@@ -2,7 +2,7 @@
 from django.urls import path
 from .views import StudentView, SchoolView
 
-app_name = 'student' # Define an app namespace for unique URL names
+app_name = 'api' # Define an app namespace for unique URL names
 
 urlpatterns = [
     path('student/<str:action>/', StudentView.as_view(), name='add-student'), 

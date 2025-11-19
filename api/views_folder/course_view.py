@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from ..models import Course, Teacher
+from ..models import Course
 from ..serializers import *
 
 
@@ -35,3 +35,5 @@ class CourseView(APIView):
     
 
     #Add A New Course 
+    def add_new_course(self, request, id=None, instance=None): 
+        ...
