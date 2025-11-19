@@ -34,7 +34,7 @@ class SchoolView(APIView):
         return func(request, id=id, instance=instance)
     
     #add a new school to the database 
-    def add_new_school(self, request):
+    def add_new_school(self, request, id=None, instance=None):
         data = {
             "name": request.data.get("name"),
             "email": request.data.get("email"),
@@ -60,5 +60,25 @@ class SchoolView(APIView):
             )
 
         return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    
+    #update school details 
+    def update_school(self, request, id, instance=None): 
+        school = get_object_or_404(School, id=id)
 
+        data = {
+            "name": request.data.get("name", school.name),
+            "email": request.data.get("email", school.email),
+            "phone_number": request.data.get("phone_number", school.phone_number),
+            "location": request.data.get("location", school.location),
+        }
 
+        serializer = SchoolSerializer(school, data=data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"message": f'{data["name"]} updated successfully'},
+                status=status.HTTP_200_OK
+            )
+
+        return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
