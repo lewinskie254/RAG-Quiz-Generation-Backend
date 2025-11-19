@@ -29,3 +29,6 @@ class StudentView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         return func(request, id=id, instance=instance)
+    
+    def add_new_student(self, request): 
+        ...
