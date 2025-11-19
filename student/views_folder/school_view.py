@@ -24,6 +24,7 @@ class SchoolView(APIView):
     def get(self, request, action, id=None, instance=None):
         actions = {
             "show-all-school": self.show_all_schools,
+            "show-specific-school" : self.show_specific_school, 
         }
         func = actions.get(action)
         if not func:
@@ -82,3 +83,15 @@ class SchoolView(APIView):
             )
 
         return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    
+    #show all schools 
+    def show_all_schools(self, request, id=None, instance=None): 
+        schools = School.objects.all()
+        serializer = SchoolSerializer(schools, many=True)
+        return Response({"schools" : serializer.data}, status=status.HTTP_200_OK)
+    
+    #show specific school 
+    def show_specific_school(self, request, id, instance=None): 
+        school = get_object_or_404(School, id=id)
+        serializer = SchoolSerializer(school)
+        return Response({"school" : serializer.data}, status=status.HTTP_200_OK)
