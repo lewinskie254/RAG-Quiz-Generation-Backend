@@ -24,8 +24,8 @@ class CourseView(APIView):
     
     def get(self, request, action, id=None, instance=None):
         actions = {
-            "show-all-school": self.show_all_schools,
-            "show-specific-school" : self.show_specific_school, 
+            "show-all-courses": self.show_all_courses,
+            "show-specific-course" : self.show_specific_course, 
         }
         func = actions.get(action)
         if not func:
@@ -70,3 +70,15 @@ class CourseView(APIView):
 
         serializer = CourseSerializer(course, data=data, partial=True)
         return serializer_checker(serializer, f"{data['name']} updated successfully") 
+    
+    #show all courses 
+    def show_all_courses(self, request, id=None, instance=None): 
+        courses = Course.objects.all() 
+        serializer = CourseSerializer(courses, many=True)
+        return Response({"courses" : serializer.data}, status=status.HTTP_200_OK)
+
+    #show specific course 
+    def show_specific_course(self, request, id, instance=None): 
+        course = get_object_or_404(Course, id=id)
+        serializer = CourseSerializer(course)
+        return Response({"course": serializer.data}, status=status.HTTP_200_OK)
