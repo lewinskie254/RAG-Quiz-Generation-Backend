@@ -33,7 +33,12 @@ class QuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = "__all__"
 
-class Choices(serializers.ModelSerializer): 
+class ChoicesSerializer(serializers.ModelSerializer): 
     class Meta: 
         model = Choices
+        fields = "__all__"
+
+class TeacherSerializer(serializers.ModelSerializer): 
+    class Meta: 
+        model = Teacher
         fields = "__all__"
