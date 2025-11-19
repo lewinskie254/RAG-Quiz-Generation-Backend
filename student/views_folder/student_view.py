@@ -34,27 +34,29 @@ class StudentView(APIView):
     def add_new_student(self, request, id=None, instance=None): 
         course = get_object_or_404(Course, id=request.data.get("course"))
         school = get_object_or_404(School, id=request.data.get("school"))
-
+        
         data = {
-            "name" : request.data.get("student_name"), 
-            "email" : request.data.get("email", ""), 
+            "name": request.data.get("student_name"), 
+            "email": request.data.get("email", ""), 
             "phone_number": request.data.get("phone_number"), 
-            "course" : course.id, 
-            "school" : school.id, 
-            "grade" : 0 
+            "course": course,   # Pass instance if serializer expects it
+            "school": school,   # Pass instance if serializer expects it
+            "grade": 0 
         }
 
-        # Check for missing fields (excluding 0 credit)
         required_fields = ["name", "phone_number", "course", "school"]
         missing_fields = [key for key in required_fields if not data.get(key)]
-
         if missing_fields:
             return Response({"message": f"Missing fields: {', '.join(missing_fields)}"}, status=status.HTTP_400_BAD_REQUEST)
 
         student_serializer = StudentSerializer(data=data)
         if student_serializer.is_valid(): 
             student_serializer.save()
-            return Response({"message" :f" {data['name']} saved successfully"}, status=status.HTTP_201_CREATED)
+            return Response({"message": f"{data['name']} saved successfully"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(student_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
     def show_student_details(self, request, id, instance=None): 
         student = get_object_or_404(Student, id=id)
