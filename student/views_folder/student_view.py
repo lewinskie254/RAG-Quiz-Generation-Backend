@@ -24,6 +24,7 @@ class StudentView(APIView):
         actions = {
             "show-student-details": self.show_student_details,
             "show-all-students-by-school" : self.show_all_students_by_school, 
+            "show-all-students" : self.show_all_students, 
         }
         func = actions.get(action)
         if not func:
@@ -94,8 +95,13 @@ class StudentView(APIView):
         student_serializer = StudentSerializer(student)
         return Response({"student": student_serializer.data}, status=status.HTTP_200_OK)
     
-    def show_all_students_by_school(self, request, id): 
+    def show_all_students_by_school(self, request, id, instance=None): 
         school = get_object_or_404(School, id=id)
         students = Student.objects.filter(school=school)
+        students_serializer = StudentSerializer(students, many=True)
+        return Response({"students": students_serializer.data}, status=status.HTTP_200_OK)
+    
+    def show_all_students(self, request, id=None, instance=None): 
+        students= Student.objects.all()
         students_serializer = StudentSerializer(students, many=True)
         return Response({"students": students_serializer.data}, status=status.HTTP_200_OK)
