@@ -4,6 +4,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from ..models import School
 from ..serializers import *
+from ..utils import serializer_checker
 
 
 class SchoolView(APIView):
@@ -52,14 +53,7 @@ class SchoolView(APIView):
             )
 
         serializer = SchoolSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": f'{data["name"]} created successfully'},
-                status=status.HTTP_201_CREATED
-            )
-
-        return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return serializer_checker(serializer, f"{data['name']} created successfully. ")
     
     #update school details 
     def update_school(self, request, id, instance=None): 
@@ -73,15 +67,7 @@ class SchoolView(APIView):
         }
 
         serializer = SchoolSerializer(school, data=data, partial=True)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": f'{data["name"]} updated successfully'},
-                status=status.HTTP_200_OK
-            )
-
-        return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return serializer_checker(serializer, f"{data['name']} updated successfully. ")
     
     #show all schools 
     def show_all_schools(self, request, id=None, instance=None): 

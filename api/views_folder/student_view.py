@@ -5,6 +5,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from ..models import Course, Student, School
 from ..serializers import *
+from ..utils import serializer_checker
 
 class StudentView(APIView): 
     def post(self, request, action, id=None, instance=None):
@@ -52,12 +53,8 @@ class StudentView(APIView):
         if missing_fields:
             return Response({"message": f"Missing fields: {', '.join(missing_fields)}"}, status=status.HTTP_400_BAD_REQUEST)
 
-        student_serializer = StudentSerializer(data=data)
-        if student_serializer.is_valid(): 
-            student_serializer.save()
-            return Response({"message": f"{data['name']} saved successfully"}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({"errors": student_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = StudentSerializer(data=data)
+        return serializer_checker(serializer, f"{data['name']} created successfully.")
 
     def update_student(self, request, id):
         student = get_object_or_404(Student, id=id)
@@ -79,14 +76,7 @@ class StudentView(APIView):
         }
 
         serializer = StudentSerializer(student, data=data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"message": f"{data['name']} updated successfully"},
-                status=status.HTTP_200_OK
-            )
-
-        return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return serializer_checker(serializer, f"{data['name']} updated successfully.")
 
 
     def show_student_details(self, request, id, instance=None): 
