@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from ..models import School
+from ..models import Course, Teacher
 from ..serializers import *
 
 
@@ -32,3 +32,6 @@ class CourseView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         return func(request, id=id, instance=instance)
+    
+
+    #Add A New Course 
