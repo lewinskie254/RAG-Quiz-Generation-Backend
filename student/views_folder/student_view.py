@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from ..models import Course, Student, School
+from ..serializers import *
 
 class StudentView(APIView): 
     def post(self, request, action, id=None, instance=None):
@@ -20,7 +21,7 @@ class StudentView(APIView):
     
     def get(self, request, action, id=None, instance=None):
         actions = {
-            "add-main-user-update": self.add_temp_main_user,
+            "show-student-details": self.show_student_details,
         }
         func = actions.get(action)
         if not func:
@@ -42,3 +43,13 @@ class StudentView(APIView):
             "school" : school.id, 
             "grade" : 0 
         }
+
+        student_serializer = StudentSerializer(data=data)
+        if student_serializer.is_valid(): 
+            student_serializer.save()
+            return Response({"message" :f" {data['name']} saved successfully"}, status=status.HTTP_201_CREATED)
+
+    def show_student_details(self, request, id): 
+        student = get_object_or_404(Student, id=id)
+        student_serializer = StudentSerializer(student)
+        return Response({"student": student_serializer.data}, status=status.HTTP_200_OK)
