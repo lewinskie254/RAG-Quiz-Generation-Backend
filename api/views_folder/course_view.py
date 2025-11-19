@@ -36,4 +36,32 @@ class CourseView(APIView):
 
     #Add A New Course 
     def add_new_course(self, request, id=None, instance=None): 
-        ...
+        data = {
+        "name": request.data.get("name"), 
+        "units": request.data.get("units")  # keep as string first
+        }
+
+        required_fields = ["name", "units"]
+        missing = [f for f in required_fields if not data.get(f)]
+
+        if missing:
+            return Response(
+                {"message": f"Missing fields: {', '.join(missing)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        # Ensure units is an integer and handle errors
+        try:
+            data["units"] = int(data.get("units", 0))
+        except (TypeError, ValueError):
+            return Response({"message": "Units must be a number"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+        serializer = CourseSerializer(data=data) 
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"message" : f"{data['name']} course added successfully"}, 
+                status=status.HTTP_201_CREATED
+            )
+        return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)

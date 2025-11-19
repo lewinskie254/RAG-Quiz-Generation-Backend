@@ -15,8 +15,6 @@ class Teacher(models.Model):
     phone_number = models.CharField(max_length=20, null=False, unique=True, help_text='teacher-phone-number')
     school = models.ForeignKey(School, on_delete=models.CASCADE, null=False)
 
-
-
 class Course(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, null=False, default=uuid.uuid4, help_text='course-id')
     name = models.CharField(max_length=200, null=False, help_text='course-name')
