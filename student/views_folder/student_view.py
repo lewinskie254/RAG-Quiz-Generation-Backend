@@ -57,7 +57,7 @@ class StudentView(APIView):
             student_serializer.save()
             return Response({"message": f"{data['name']} saved successfully"}, status=status.HTTP_201_CREATED)
         else:
-            return Response(student_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"errors": student_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def update_student(self, request, id):
         student = get_object_or_404(Student, id=id)
@@ -75,7 +75,6 @@ class StudentView(APIView):
             "phone_number": request.data.get("phone_number", student.phone_number),
             "course": course,
             "school": school,
-            # DON’T override grade unless needed
             "grade": request.data.get("grade", student.grade),
         }
 
@@ -87,7 +86,7 @@ class StudentView(APIView):
                 status=status.HTTP_200_OK
             )
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
     def show_student_details(self, request, id, instance=None): 

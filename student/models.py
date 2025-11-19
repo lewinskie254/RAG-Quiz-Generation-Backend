@@ -5,7 +5,9 @@ from django.db import models
 class School(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, null=False, default=uuid.uuid4, help_text='school-id')
     name = models.CharField(max_length=200, null=False, help_text='school-name')
-
+    email = models.CharField(max_length=200, null=False, unique=True, help_text='school-email')
+    phone_number = models.CharField(max_length=20, null=False, unique=True, help_text='school-phone-number')
+    location = models.CharField(max_length=200, null=False,help_text='school-location')
 
 class Course(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, null=False, default=uuid.uuid4, help_text='course-id')
@@ -14,8 +16,8 @@ class Course(models.Model):
 class Student(models.Model): 
     id = models.UUIDField(primary_key=True, unique=True, null=False, default=uuid.uuid4, help_text='student-id')
     name = models.CharField(max_length=200, null=False, help_text='student-name')
-    email = models.CharField(max_length=200, null=True, help_text='student-email')
-    phone_number = models.CharField(max_length=20, null=True, help_text='student-phone-number')
+    email = models.CharField(max_length=200, null=True, unique=True, help_text='student-email')
+    phone_number = models.CharField(max_length=20, null=True,unique=True, help_text='student-phone-number')
     course = models.ForeignKey(Course, on_delete=models.CASCADE,null=False)
     school = models.ForeignKey(School, on_delete=models.CASCADE,null=False,)
     grade = models.IntegerField(default=0) 
