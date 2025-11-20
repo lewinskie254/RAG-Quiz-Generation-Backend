@@ -49,6 +49,7 @@ class Student(models.Model):
 
 class Unit(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=200)
     course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
@@ -78,6 +79,7 @@ class Quiz(models.Model):
         related_name="quizzes"
     )
     number_of_questions = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Question(models.Model): 

@@ -41,17 +41,22 @@ class UnitView(APIView):
     def add_new_unit(self, request, id=None, instance=None): 
         course_id = request.data.get("course")
         teacher_id = request.data.get("teacher")
+        name = request.data.get("name")
 
         if not course_id:
             return Response({"message": "Missing course"}, status=status.HTTP_400_BAD_REQUEST)
 
         if not teacher_id:
             return Response({"message": "Missing teacher"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not name: 
+            return Response({"message": "Missing unit name"}, status=status.HTTP_400_BAD_REQUEST)
 
         course = get_object_or_404(Course, id=course_id)
         teacher = get_object_or_404(Teacher, id=teacher_id)
 
         data = {
+            "name" : name, 
             "course": course,
             "teacher": teacher,
         }
@@ -82,6 +87,7 @@ class UnitView(APIView):
         data = {
             "course": course,
             "teacher": teacher,
+            "name" : request.data.get("name") or unit.name, 
         }
 
         score_str = request.data.get("score")

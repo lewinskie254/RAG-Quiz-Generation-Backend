@@ -61,3 +61,20 @@ class QuizView(APIView):
             }, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update_quiz(self, request, id, instance=None): 
+        unit = get_object_or_404(Unit, id=request.data.get("unit"))
+        data = {
+            "unit": unit, 
+        }
+        no_of_questions = request.data.get("number_of_questions", 0)
+        if no_of_questions is not None: 
+            try: 
+                data["number_of_questions"] = int(no_of_questions)
+            except (TypeError, ValueError):
+                return Response(
+                    {"message": "number_of_questions must be a number"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        serializer = QuizSerializer(data=data)
+        return serializer_checker(serializer, f"f{data['']}")
