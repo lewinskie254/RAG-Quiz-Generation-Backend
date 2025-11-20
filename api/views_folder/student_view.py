@@ -5,7 +5,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from ..models import Course, Student, School
 from ..serializers import *
-from ..utils import serializer_checker
+from ..utils import serializer_checker, delete_element
 
 class StudentView(APIView): 
     def post(self, request, action, id=None, instance=None):
@@ -26,6 +26,7 @@ class StudentView(APIView):
             "show-student-details": self.show_student_details,
             "show-all-students-by-school" : self.show_all_students_by_school, 
             "show-all-students" : self.show_all_students, 
+            "delete-student" : self.delete_student, 
         }
         func = actions.get(action)
         if not func:
@@ -35,6 +36,7 @@ class StudentView(APIView):
             )
         return func(request, id=id, instance=instance)
     
+    #add a new student 
     def add_new_student(self, request, id=None, instance=None): 
         course = get_object_or_404(Course, id=request.data.get("course"))
         school = get_object_or_404(School, id=request.data.get("school"))
@@ -56,6 +58,7 @@ class StudentView(APIView):
         serializer = StudentSerializer(data=data)
         return serializer_checker(serializer, f"{data['name']} created successfully.")
 
+    #update a student's details 
     def update_student(self, request, id):
         student = get_object_or_404(Student, id=id)
 
@@ -78,19 +81,25 @@ class StudentView(APIView):
         serializer = StudentSerializer(student, data=data, partial=True)
         return serializer_checker(serializer, f"{data['name']} updated successfully.")
 
-
+    #show the student details for a specific student 
     def show_student_details(self, request, id, instance=None): 
         student = get_object_or_404(Student, id=id)
         student_serializer = StudentSerializer(student)
         return Response({"student": student_serializer.data}, status=status.HTTP_200_OK)
     
+    #show all students for a specific school 
     def show_all_students_by_school(self, request, id, instance=None): 
         school = get_object_or_404(School, id=id)
         students = Student.objects.filter(school=school)
         students_serializer = StudentSerializer(students, many=True)
         return Response({"students": students_serializer.data}, status=status.HTTP_200_OK)
     
+    #show all students 
     def show_all_students(self, request, id=None, instance=None): 
         students= Student.objects.all()
         students_serializer = StudentSerializer(students, many=True)
         return Response({"students": students_serializer.data}, status=status.HTTP_200_OK)
+    
+    #delete student 
+    def delete_student(self, request, id, instance=None): 
+        return delete_element(Student, id)

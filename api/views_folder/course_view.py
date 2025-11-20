@@ -4,7 +4,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from ..models import Course
 from ..serializers import *
-from ..utils import serializer_checker
+from ..utils import serializer_checker, delete_element
 
 
 class CourseView(APIView):
@@ -26,6 +26,7 @@ class CourseView(APIView):
         actions = {
             "show-all-courses": self.show_all_courses,
             "show-specific-course" : self.show_specific_course, 
+            "delete-course" : self.delete_course, 
         }
         func = actions.get(action)
         if not func:
@@ -82,3 +83,8 @@ class CourseView(APIView):
         course = get_object_or_404(Course, id=id)
         serializer = CourseSerializer(course)
         return Response({"course": serializer.data}, status=status.HTTP_200_OK)
+    
+
+    #delete course 
+    def delete_course(self, request, id, instance=None): 
+        return delete_element(Course, id)

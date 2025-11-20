@@ -4,7 +4,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from ..models import Teacher, School
 from ..serializers import *
-from ..utils import serializer_checker
+from ..utils import serializer_checker, delete_element
 
 
 class SchoolView(APIView): 
@@ -27,6 +27,7 @@ class SchoolView(APIView):
             "show-all-teachers": self.show_all_teachers,
             "show-teachers-by-school" : self.show_teachers_by_school, 
             "show-specific-teachers" : self.show_specific_teachers, 
+            "delete-teacher" : self.delete_teacher, 
         }
         func = actions.get(action)
         if not func:
@@ -91,3 +92,7 @@ class SchoolView(APIView):
         teacher = get_object_or_404(Teacher, id=id)
         serializer = TeacherSerializer(teacher)
         return Response({"teacher" : serializer.data}, status=status.HTTP_200_OK)
+
+    #delete teacher 
+    def delete_teacher(self, request, id, instance=None): 
+        return delete_element(Teacher, id)
