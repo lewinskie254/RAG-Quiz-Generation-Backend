@@ -40,29 +40,61 @@ class StudentView(APIView):
     def add_new_student(self, request, id=None, instance=None): 
         course = get_object_or_404(Course, id=request.data.get("course"))
         school = get_object_or_404(School, id=request.data.get("school"))
-        
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        if not username or not password:
+            return Response({"message": "Missing username or password"}, status=400)
+
+        # Create User first
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            role="student",
+            email=request.data.get("email", "")
+        )
+
         data = {
-            "name": request.data.get("student_name"), 
-            "email": request.data.get("email", ""), 
-            "phone_number": request.data.get("phone_number"), 
-            "course": course,   # Pass instance if serializer expects it
-            "school": school,   # Pass instance if serializer expects it
-            "grade": 0 
+            "user": user.id,  # link User PK
+            "name": request.data.get("student_name"),
+            "phone_number": request.data.get("phone_number"),
+            "course": course.id,  # pass PKs if serializer uses PrimaryKeyRelatedField
+            "school": school.id,
+            "grade": 0
         }
 
-        required_fields = ["name", "phone_number", "course", "school"]
-        missing_fields = [key for key in required_fields if not data.get(key)]
-        if missing_fields:
-            return Response({"message": f"Missing fields: {', '.join(missing_fields)}"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check required fields
+        required_fields = ["name", "phone_number"]
+        missing = [f for f in required_fields if not data.get(f)]
+        if missing:
+            return Response({"message": f"Missing fields: {', '.join(missing)}"}, status=400)
 
         serializer = StudentSerializer(data=data)
-        return serializer_checker(serializer, f"{data['name']} created successfully.")
+        if serializer.is_valid():
+            student = serializer.save()
+            return Response({"message": f"Student {student.name} added successfully"}, status=201)
+        else:
+            return Response(serializer.errors, status=400)
 
     #update a student's details 
     def update_student(self, request, id):
         student = get_object_or_404(Student, id=id)
 
-        # Optional updates
+        # Update User if needed
+        user = student.user
+        username = request.data.get("username")
+        password = request.data.get("password")
+        email = request.data.get("email")
+
+        if username:
+            user.username = username
+        if password:
+            user.set_password(password)  # make sure to hash
+        if email:
+            user.email = email
+        user.save()
+
+        # Update Student profile
         course_id = request.data.get("course")
         school_id = request.data.get("school")
 
@@ -71,15 +103,20 @@ class StudentView(APIView):
 
         data = {
             "name": request.data.get("student_name", student.name),
-            "email": request.data.get("email", student.email),
             "phone_number": request.data.get("phone_number", student.phone_number),
-            "course": course,
-            "school": school,
+            "course": course.id,
+            "school": school.id,
             "grade": request.data.get("grade", student.grade),
+            "user": student.user.id
         }
 
         serializer = StudentSerializer(student, data=data, partial=True)
-        return serializer_checker(serializer, f"{data['name']} updated successfully.")
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": f"{data['name']} updated successfully"}, status=200)
+        else:
+            return Response(serializer.errors, status=400)
+
 
     #show the student details for a specific student 
     def show_student_details(self, request, id, instance=None): 

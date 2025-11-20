@@ -1,5 +1,20 @@
 import uuid
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
+    # Role field to distinguish student vs teacher
+    ROLE_CHOICES = (
+        ("student", "Student"),
+        ("teacher", "Teacher"),
+    )
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
+
+    def __str__(self):
+        return f"{self.username} ({self.role})"
+    
 
 # Create your models here.
 class School(models.Model):
@@ -12,6 +27,7 @@ class School(models.Model):
 
 class Teacher(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="teacher_profile")
     name = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=20, unique=True)
     school = models.ForeignKey(
@@ -29,6 +45,7 @@ class Course(models.Model):
 
 class Student(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="student_profile")
     name = models.CharField(max_length=200)
     email = models.CharField(max_length=200, unique=True, null=True)
     phone_number = models.CharField(max_length=20, unique=True, null=True)
