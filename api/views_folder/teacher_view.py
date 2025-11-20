@@ -7,7 +7,7 @@ from ..serializers import *
 from ..utils import serializer_checker, delete_element
 
 
-class SchoolView(APIView): 
+class TeacherView(APIView): 
     def post(self, request, action, id=None, instance=None):
         actions = {
             "add-teacher": self.add_new_teacher,
