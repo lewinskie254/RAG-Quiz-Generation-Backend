@@ -59,10 +59,10 @@ class UnitView(APIView):
         score_str = request.data.get("score")
         if score_str:
             try:
-                data["score"] = int(score_str)
+                data["total_score"] = int(score_str)
             except (TypeError, ValueError):
                 return Response(
-                    {"message": "Score must be a number"},
+                    {"message": "total score must be a number"},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -87,14 +87,14 @@ class UnitView(APIView):
         score_str = request.data.get("score")
         if score_str is not None:
             try:
-                data["score"] = int(score_str)
+                data["total_score"] = int(score_str)
             except (TypeError, ValueError):
                 return Response(
                     {"message": "Score must be a number"},
                     status=status.HTTP_400_BAD_REQUEST
                 )
         else: 
-            data["score"] = unit.score
+            data["total_score"] = unit.total_score
         
         serializer = UnitSerializer(unit, data=data, partial=True)
         return serializer_checker(serializer, "unit updated successfully")

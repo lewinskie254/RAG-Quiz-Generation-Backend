@@ -24,7 +24,7 @@ class Teacher(models.Model):
 class Course(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=200)
-    units = models.IntegerField(default=0)
+    total_units = models.IntegerField(default=0)
 
 
 class Student(models.Model):
@@ -61,7 +61,7 @@ class Unit(models.Model):
         blank=True,
         related_name="units"
     )
-    score = models.IntegerField(default=0)  # still recommended to remove
+    total_score = models.IntegerField(default=100)  # still recommended to remove
 
 class StudentUnitScore(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
