@@ -45,6 +45,8 @@ class Student(models.Model):
     grade = models.IntegerField(default=0)
 
 
+
+
 class Unit(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     course = models.ForeignKey(
@@ -60,6 +62,12 @@ class Unit(models.Model):
         related_name="units"
     )
     score = models.IntegerField(default=0)  # still recommended to remove
+
+class StudentUnitScore(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
+    score = models.IntegerField(default=0)
 
 
 class Quiz(models.Model): 
