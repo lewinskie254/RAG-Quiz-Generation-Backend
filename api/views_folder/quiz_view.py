@@ -30,6 +30,7 @@ class QuizView(APIView):
     def get(self, request, action, id=None, instance=None):
         actions = {
             "show-all-quizzes": self.show_all_quizzes,
+            "show-all-questions" : self.show_all_questions, 
             "show-all-questions-per-quiz": self.show_all_questions_per_quiz, 
             "show-specific-quiz" : self.show_specific_quiz, 
             "show-specific-question": self.show_specific_question, 
@@ -130,7 +131,12 @@ class QuizView(APIView):
     
     #show all the questions per quiz 
     def show_all_questions_per_quiz(self, request, id, instance=None): 
-        questions = Question.objects.filter(quiz=id)
+        print(id)
+        quizzes = Quiz.objects.all()
+        ids = [q.id for q in quizzes]
+        print(ids)
+        quiz = get_object_or_404(Quiz, id=id)
+        questions = Question.objects.filter(quiz=quiz)
         serializer = QuestionSerializer(questions, many=True)
         return Response({"questions": serializer.data}, status=status.HTTP_200_OK)
 
@@ -200,7 +206,7 @@ class QuizView(APIView):
     def generate_quiz(self, request, id, instance): 
         teacher = get_object_or_404(Teacher, id=id)
         topic = get_object_or_404(Unit, id=instance)
-        
+
         source_text = f"{topic.name}.txt" 
         instruction = "Generate 12 multiple-choice questions for an exam."
         questions = run_rag_chain(source_text, instruction)
@@ -212,8 +218,6 @@ class QuizView(APIView):
             "school": teacher.school.id,
             "created_by": teacher.id
         }
-
-      
 
         serializer = QuizSerializer(data=quiz_data)
 
@@ -248,3 +252,8 @@ class QuizView(APIView):
                     choice_serializer.save()
 
         return Response({"quiz": quiz.id, "message": "Created Successfully"}, status=status.HTTP_201_CREATED)
+
+    def show_all_questions(self, request, id=None, instance=None):
+        questions = Question.objects.all()
+        serializer = QuestionSerializer(questions, many=True)
+        return Response({"questions": serializer.data}, status=status.HTTP_200_OK) 
