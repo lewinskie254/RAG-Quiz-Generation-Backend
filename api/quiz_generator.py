@@ -162,7 +162,7 @@ def run_rag_chain(source_file_name: str, final_llm_instruction: str):
     
     print("\n------------------Generated Questions (JSON)-----------------")
     responses = clean_llm_output(json_questions)
-    save_json_responses(responses, source_file_name)
+    return responses
 
 
 if __name__ == "__main__":

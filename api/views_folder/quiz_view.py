@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404
 from ..models import Quiz, Question, Unit, Choice
 from ..serializers import *
 from ..utils import serializer_checker, delete_element
+from ..quiz_generator import run_rag_chain
+from django.db import transaction
 
 
 class QuizView(APIView): 
@@ -34,7 +36,8 @@ class QuizView(APIView):
             "show-multiple-choices-for-question" : self.show_multiple_choices_for_question, 
             "delete-quiz" : self.delete_quiz, 
             "delete-question" : self.delete_question, 
-            "delete-multiple-choice" : self.delete_multiple_choice
+            "delete-multiple-choice" : self.delete_multiple_choice, 
+            "generate-quiz" : self.generate_quiz 
         }
         func = actions.get(action)
         if not func:
@@ -191,3 +194,52 @@ class QuizView(APIView):
     #delete a multiple choice 
     def delete_multiple_choice(self, request, id, instance=None): 
         return delete_element(Choice, id)
+
+
+    #generate quiz by 
+    def generate_quiz(self, request, id, instance): 
+        teacher = get_object_or_404(Teacher, id=id)
+        topic = get_object_or_404(Unit, id=instance)
+
+        source_text = f"{topic.name}.txt" 
+        instruction = "Generate 12 multiple-choice questions for an exam."
+        questions = run_rag_chain(source_text, instruction)
+
+        quiz_data = {
+            "unit": topic,
+            "number_of_questions": 12,
+            "school": teacher.school,
+            "created_by": teacher
+        }
+
+        serializer = QuizSerializer(data=quiz_data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        with transaction.atomic():
+            quiz = serializer.save()
+
+            for q in questions:
+                question_data = {
+                    "question": q["question"],
+                    "answer": q["options"][q["answer"]],
+                    "quiz": quiz.id
+                }
+
+                question_serializer = QuestionSerializer(data=question_data)
+                if not question_serializer.is_valid():
+                    return Response(question_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+                question = question_serializer.save()
+
+                for c in q["options"]:
+                    c_data = {"content": c, "question": question.id}
+
+                    choice_serializer = ChoiceSerializer(data=c_data)
+                    if not choice_serializer.is_valid():
+                        return Response(choice_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+                    choice_serializer.save()
+
+        return Response({"quiz": quiz.id, "message": "Created Successfully"}, status=status.HTTP_201_CREATED)

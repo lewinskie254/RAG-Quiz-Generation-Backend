@@ -1,0 +1,122 @@
+[
+  {
+    "question": "What is a primary purpose of conducting an onsite venue evaluation during event planning?",
+    "options": [
+      "To finalize catering menus with the venue chef.",
+      "To anticipate challenges and ensure compliance with regulations.",
+      "To negotiate pricing for event equipment rentals.",
+      "To establish a communication plan with emergency services."
+    ],
+    "answer": 1
+  },
+  {
+    "question": "According to the context, which detail should be verified in venue brochures or online listings?",
+    "options": [
+      "The historical significance of the venue.",
+      "The capacity and suitability for intended activities.",
+      "The availability of valet parking services.",
+      "The personal contact information of the venue manager."
+    ],
+    "answer": 1
+  },
+  {
+    "question": "Which element is explicitly mentioned as needing clear and safe access in a layout draft, including emergency exits?",
+    "options": [
+      "Catering/Service Stations",
+      "Registration/Help Desk",
+      "Entrance and Exit Paths",
+      "Additional Zones"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "When planning for environmental impact, what is an outdoor-specific consideration mentioned?",
+    "options": [
+      "Indoor ventilation",
+      "Temperature control",
+      "Shade, wind, rain, or drainage issues",
+      "Electrical and lighting positions"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "In event design, what does 'Emphasis' primarily refer to?",
+    "options": [
+      "The visual flow or path the eye naturally follows.",
+      "The focal point that immediately attracts attention and creates visual interest.",
+      "The harmonious working together of all design elements.",
+      "The repetition of design elements for aesthetic appeal."
+    ],
+    "answer": 1
+  },
+  {
+    "question": "How is unity intentionally created in the example provided for event design?",
+    "options": [
+      "Through a stark contrast of modern and antique furniture.",
+      "By using a single, dominant bright color throughout the space.",
+      "Through natural materials and matching tones.",
+      "By placing decorative focal points in every corner of the room."
+    ],
+    "answer": 2
+  },
+  {
+    "question": "A key learning objective for venue assessment is for students to be able to:",
+    "options": [
+      "Design complex electrical circuits for AV setups.",
+      "Conduct a thorough venue site inspection and collect essential spatial and logistical data.",      
+      "Negotiate contracts with various equipment suppliers.",
+      "Prepare gourmet meals suitable for different event types."
+    ],
+    "answer": 1
+  },
+  {
+    "question": "Which of the following is a learning objective related to event equipment planning?",    
+    "options": [
+      "To analyze market trends for event catering services.",
+      "To estimate quantities needed for diverse setups, including seating, lighting, décor, and technical systems.",
+      "To develop marketing strategies for event promotion.",
+      "To manage guest registration and ticketing platforms."
+    ],
+    "answer": 1
+  },
+  {
+    "question": "What is one method of assessment mentioned for students regarding venue planning?",      
+    "options": [
+      "A written exam on historical event venues.",
+      "Submission of a detailed venue sketch, including all zones, measurements, and flow paths.",        
+      "A practical test on emergency medical procedures.",
+      "An oral presentation on event budgeting."
+    ],
+    "answer": 1
+  },
+  {
+    "question": "Which of the following materials is explicitly required for a site visit according to the context?",
+    "options": [
+      "Laptop computers for virtual tours.",
+      "Measuring tapes, laser distance tools, and graph papers.",
+      "Professional photography equipment.",
+      "Event planning software licenses."
+    ],
+    "answer": 1
+  },
+  {
+    "question": "The principles of design in event layout are essential for event professionals to achieve what main goal?",
+    "options": [
+      "To secure sponsorships for large-scale events.",
+      "To transform ordinary spaces into well-organized and captivating environments.",
+      "To manage the financial aspects of event production.",
+      "To create legal contracts for venue usage."
+    ],
+    "answer": 1
+  },
+  {
+    "question": "When assessing a venue, what should be evaluated regarding guest comfort and safety?",   
+    "options": [
+      "The number of available parking spaces for staff.",
+      "The natural lighting, ventilation, and acoustics.",
+      "The variety of food and beverage options offered.",
+      "The historical significance of the building."
+    ],
+    "answer": 1
+  }
+]

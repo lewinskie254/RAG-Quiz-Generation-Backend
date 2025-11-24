@@ -16,4 +16,5 @@ urlpatterns = [
     path('unit/<str:action>/<str:instance>/', UnitView.as_view(), name='unit-details'), 
     path('quiz/<str:action>/', QuizView.as_view(), name='add-quiz'), 
     path('quiz/<str:action>/<str:instance>/', QuizView.as_view(), name='quiz-details'), 
+    path('quiz/<str:action>/<str:id>/<str:instance>/', QuizView.as_view(), name='generate-and-set-quiz'), 
 ]

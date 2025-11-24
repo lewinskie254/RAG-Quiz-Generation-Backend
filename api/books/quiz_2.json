@@ -1,0 +1,122 @@
+[
+  {
+    "question": "According to the provided text, what is the final stage that involves preparing a detailed event report documenting achievements, challenges, and financial statements?",
+    "options": [
+      "Reporting",
+      "Pre-Event Phase",
+      "During Event Phase",
+      "Concept Development"
+    ],
+    "answer": 0
+  },
+  {
+    "question": "What three elements does event management integrate into one cohesive process to transform an idea into a tangible reality?",
+    "options": [
+      "Budgeting, staffing, and marketing",
+      "Creativity, logistics, and coordination",
+      "Sales, public relations, and legal compliance",
+      "Vendor selection, venue booking, and guest invitations"
+    ],
+    "answer": 1
+  },
+  {
+    "question": "Which of the following is listed as a lesson objective for 'EM 1: Introduction to Event management'?",
+    "options": [
+      "Mastering advanced event software",
+      "Understanding the basic concepts of event management",
+      "Becoming a certified event planner",
+      "Developing a comprehensive marketing plan"
+    ],
+    "answer": 1
+  },
+  {
+    "question": "Which of these is NOT a key component of the Post-Event Phase, according to the text?",  
+    "options": [
+      "Evaluation and Feedback",
+      "Financial Reconciliation",
+      "Performance Reporting",
+      "Concept Development"
+    ],
+    "answer": 3
+  },
+  {
+    "question": "For clarity, into how many distinct phases can the scope of event management be divided?",
+    "options": [
+      "Two",
+      "Three",
+      "Four",
+      "Five"
+    ],
+    "answer": 1
+  },
+  {
+    "question": "What is a key component of the Pre-Event Phase?",
+    "options": [
+      "Managing volunteers",
+      "Collecting donor feedback",
+      "Concept Development",
+      "Finalizing payments"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "What role does the event manager act as, bringing together multiple stakeholders?",      
+    "options": [
+      "A primary caterer",
+      "The central coordinator",
+      "A financial auditor",
+      "A marketing specialist"
+    ],
+    "answer": 1
+  },
+  {
+    "question": "Beyond documenting achievements and challenges, what does reporting also help strengthen?",
+    "options": [
+      "Vendor relationships and immediate sales",
+      "Professional credibility and long-term relationship building",
+      "Marketing campaigns and public relations",
+      "Client acquisition and profit margins"
+    ],
+    "answer": 1
+  },
+  {
+    "question": "According to the text, what does understanding the full scope of event management allow professionals to do?",
+    "options": [
+      "Plan Holistically",
+      "Manage Time and Resources Effectively",
+      "Deliver Consistent Quality",
+      "All of the above"
+    ],
+    "answer": 3
+  },
+  {
+    "question": "In the example of a charity gala, what activity is performed during the Post-Event phase?",
+    "options": [
+      "Securing sponsors",
+      "Overseeing registration",
+      "Preparing a performance report",
+      "Booking a banquet hall"
+    ],
+    "answer": 2
+  },
+  {
+    "question": "At its core, what does event management combine?",
+    "options": [
+      "Accounting and legal services",
+      "Creativity, strategic thinking, and operational precision",
+      "Vendor selection and contract negotiation",
+      "Customer service and public relations"
+    ],
+    "answer": 1
+  },
+  {
+    "question": "The text states that the post-event phase is often overlooked but is essential for what?",
+    "options": [
+      "Securing future funding",
+      "Immediate public relations",
+      "Professional growth and accountability",
+      "Direct marketing and sales"
+    ],
+    "answer": 2
+  }
+]
