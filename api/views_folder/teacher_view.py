@@ -54,7 +54,7 @@ class TeacherView(APIView):
         data = {
             "user": user.id,  # if your serializer expects a PK for the user
             "school": school.id,
-            "phone_number": request.data.get("phone_number"),
+            "phone_number": request.data.get("phoneNumber"),
             "name": request.data.get("name")
         }
 
@@ -95,7 +95,7 @@ class TeacherView(APIView):
 
         data = {
             "name": request.data.get("name", teacher.name),
-            "phone_number": request.data.get("phone_number", teacher.phone_number),
+            "phone_number": request.data.get("phoneNumber", teacher.phone_number),
             "school": school.id,
             "user": teacher.user.id
         }
