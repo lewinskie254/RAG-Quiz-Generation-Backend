@@ -200,33 +200,38 @@ class QuizView(APIView):
     def generate_quiz(self, request, id, instance): 
         teacher = get_object_or_404(Teacher, id=id)
         topic = get_object_or_404(Unit, id=instance)
-
+        
         source_text = f"{topic.name}.txt" 
         instruction = "Generate 12 multiple-choice questions for an exam."
         questions = run_rag_chain(source_text, instruction)
-
+        if len(questions) < 1:
+            return Response("error: generating questions", status=status.HTTP_400_BAD_REQUEST) 
         quiz_data = {
-            "unit": topic,
+            "unit": topic.id,
             "number_of_questions": 12,
-            "school": teacher.school,
-            "created_by": teacher
+            "school": teacher.school.id,
+            "created_by": teacher.id
         }
 
+      
+
         serializer = QuizSerializer(data=quiz_data)
+
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         with transaction.atomic():
             quiz = serializer.save()
-
+            print("quiz", quiz)
             for q in questions:
+                print("q", q)
                 question_data = {
                     "question": q["question"],
                     "answer": q["options"][q["answer"]],
                     "quiz": quiz.id
                 }
-
+                print("question data", question_data)
                 question_serializer = QuestionSerializer(data=question_data)
                 if not question_serializer.is_valid():
                     return Response(question_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
