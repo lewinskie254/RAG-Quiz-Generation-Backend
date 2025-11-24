@@ -112,8 +112,10 @@ class Quiz(models.Model):
         on_delete=models.CASCADE,
         related_name="quizzes"
     )
+    created_by = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
     number_of_questions = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    school = models.ForeignKey(School, on_delete=models.CASCADE, null=True)
 
 
 class Question(models.Model): 
