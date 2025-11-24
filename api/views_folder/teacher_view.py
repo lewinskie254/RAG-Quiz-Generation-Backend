@@ -57,7 +57,7 @@ class TeacherView(APIView):
             "phone_number": request.data.get("phoneNumber"),
             "name": request.data.get("name")
         }
-
+        
         # Check required fields
         required_fields = ["name", "phone_number"]
         missing = [f for f in required_fields if not data.get(f)]
@@ -68,7 +68,10 @@ class TeacherView(APIView):
             )
 
         serializer = TeacherSerializer(data=data)
-        serializer_checker(serializer, f"{data['name']} added successfully. ")
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Teacher added successfully. "}, status=status.HTTP_201_CREATED)
+        return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
     # Update a teacher's details
