@@ -12,9 +12,26 @@ class User(AbstractUser):
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
 
+    # 1. FIX: Override 'groups' with a unique related_name
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='api_user_groups', # <--- FIX IS HERE
+        blank=True,
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+        verbose_name='groups',
+    )
+
+    # 2. FIX: Override 'user_permissions' with a unique related_name
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='api_user_permissions', # <--- FIX IS HERE
+        blank=True,
+        help_text='Specific permissions for this user.',
+        verbose_name='user permissions',
+    )
+    
     def __str__(self):
         return f"{self.username} ({self.role})"
-    
 
 # Create your models here.
 class School(models.Model):
@@ -27,7 +44,7 @@ class School(models.Model):
 
 class Teacher(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="teacher_profile")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="teacher_profile")
     name = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=20, unique=True)
     school = models.ForeignKey(
@@ -45,7 +62,7 @@ class Course(models.Model):
 
 class Student(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="student_profile")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="student_profile")
     name = models.CharField(max_length=200)
     email = models.CharField(max_length=200, unique=True, null=True)
     phone_number = models.CharField(max_length=20, unique=True, null=True)
