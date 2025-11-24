@@ -38,6 +38,8 @@ class StudentView(APIView):
     
     #add a new student 
     def add_new_student(self, request, id=None, instance=None): 
+
+        print("Data sent",  request.data)
         course = get_object_or_404(Course, id=request.data.get("course"))
         school = get_object_or_404(School, id=request.data.get("school"))
         username = request.data.get("username")
@@ -56,8 +58,8 @@ class StudentView(APIView):
 
         data = {
             "user": user.id,  # link User PK
-            "name": request.data.get("student_name"),
-            "phone_number": request.data.get("phone_number"),
+            "name": request.data.get("name"),
+            "phone_number": request.data.get("phoneNumber"),
             "course": course.id,  # pass PKs if serializer uses PrimaryKeyRelatedField
             "school": school.id,
             "grade": 0
@@ -72,6 +74,7 @@ class StudentView(APIView):
         serializer = StudentSerializer(data=data)
         if serializer.is_valid():
             student = serializer.save()
+            print("user created")
             return Response({"message": f"Student {student.name} added successfully"}, status=201)
         else:
             return Response(serializer.errors, status=400)
@@ -102,8 +105,8 @@ class StudentView(APIView):
         school = get_object_or_404(School, id=school_id) if school_id else student.school
 
         data = {
-            "name": request.data.get("student_name", student.name),
-            "phone_number": request.data.get("phone_number", student.phone_number),
+            "name": request.data.get("name", student.name),
+            "phone_number": request.data.get("phoneNumber", student.phone_number),
             "course": course.id,
             "school": school.id,
             "grade": request.data.get("grade", student.grade),

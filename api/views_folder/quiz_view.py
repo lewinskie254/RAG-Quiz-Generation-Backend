@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from ..models import Quiz, Question, Unit, Choices
+from ..models import Quiz, Question, Unit, Choice
 from ..serializers import *
 from ..utils import serializer_checker, delete_element
 
@@ -164,13 +164,13 @@ class QuizView(APIView):
             "question" : question
         }
 
-        serializer = ChoicesSerializer(data=data)
+        serializer = ChoiceSerializer(data=data)
         return serializer_checker(serializer, f"multiple choice for question {question.id} added")
 
 
     #update the multiple choice answer  
     def update_multiple_choice(self, request, id, instance=None): 
-        choice = get_object_or_404(Choices, id=id) 
+        choice = get_object_or_404(Choice, id=id) 
         question_id = request.data.get("question")
         question = get_object_or_404(Question, id=question_id) if question_id else choice.question
         content = request.data.get("content")
@@ -178,16 +178,16 @@ class QuizView(APIView):
             "content" : content or choice.content, 
             "question" : question 
         }
-        serializer = ChoicesSerializer(choice, data=data, partial=True)
+        serializer = ChoiceSerializer(choice, data=data, partial=True)
         return serializer_checker(serializer, f"{choice.id} updated successfully. ")
     
     #show the multiple choices for a question 
     def show_multiple_choices_for_question(self, request, id, instance=None): 
         question = get_object_or_404(Question, id=id)
-        choices = Choices.objects.filter(question=question)
-        serializer = ChoicesSerializer(choices, many=True)
+        choices = Choice.objects.filter(question=question)
+        serializer = ChoiceSerializer(choices, many=True)
         return Response({"choices": serializer.data}, status=status.HTTP_200_OK)
     
     #delete a multiple choice 
     def delete_multiple_choice(self, request, id, instance=None): 
-        return delete_element(Choices, id)
+        return delete_element(Choice, id)

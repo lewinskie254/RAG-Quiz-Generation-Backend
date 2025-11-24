@@ -23,7 +23,7 @@ class SchoolView(APIView):
     
     def get(self, request, action, id=None, instance=None):
         actions = {
-            "show-all-school": self.show_all_schools,
+            "show-all-schools": self.show_all_schools,
             "show-specific-school" : self.show_specific_school, 
             "delete-school" : self.delete_school 
         }

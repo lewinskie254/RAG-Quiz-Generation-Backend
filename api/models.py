@@ -127,11 +127,11 @@ class Question(models.Model):
     answer = models.CharField(max_length=2000)
 
 
-class Choices(models.Model):
+class Choice(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     question = models.ForeignKey(
         Question,
         on_delete=models.CASCADE,
-        related_name="choices"
+        related_name="choice"
     )
     content = models.CharField(max_length=500)

@@ -41,10 +41,10 @@ class CourseView(APIView):
     def add_new_course(self, request, id=None, instance=None): 
         data = {
             "name": request.data.get("name"), 
-            "units": request.data.get("units")  # keep as string first
+            "total_units": request.data.get("total_units")  # keep as string first
         }
 
-        required_fields = ["name", "units"]
+        required_fields = ["name", "total_units"]
         missing = [f for f in required_fields if not data.get(f)]
 
         if missing:
@@ -54,9 +54,9 @@ class CourseView(APIView):
             )
         # Ensure units is an integer and handle errors
         try:
-            data["units"] = int(data.get("units", 0))
+            data["total_units"] = int(data.get("total_units", 0))
         except (TypeError, ValueError):
-            return Response({"message": "Units must be a number"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Total units must be a number"}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = CourseSerializer(data=data) 
         return serializer_checker(serializer, f"{data['name']} added successfully") 
@@ -66,7 +66,7 @@ class CourseView(APIView):
         course  = get_object_or_404(Course, id=id) 
         data = {
             "name": request.data.get("name") or course.name, 
-            "units": request.data.get("units") or course.units, 
+            "total_units": request.data.get("total_units") or course.total_units, 
         }
 
         serializer = CourseSerializer(course, data=data, partial=True)
