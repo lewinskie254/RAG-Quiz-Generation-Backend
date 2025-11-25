@@ -224,15 +224,12 @@ class QuizView(APIView):
 
         with transaction.atomic():
             quiz = serializer.save()
-            print("quiz", quiz)
             for q in questions:
-                print("q", q)
                 question_data = {
                     "question": q["question"],
                     "answer": q["options"][q["answer"]],
                     "quiz": quiz.id
                 }
-                print("question data", question_data)
                 question_serializer = QuestionSerializer(data=question_data)
                 if not question_serializer.is_valid():
                     return Response(question_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
