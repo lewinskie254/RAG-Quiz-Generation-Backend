@@ -26,6 +26,7 @@ class UnitView(APIView):
         actions = {
             "show-all-units": self.show_all_units,
             "show-units-by-teacher" : self.show_units_by_teacher, 
+            "show-units-by-course" : self.show_units_by_course, 
             "show-specific-unit" : self.show_specific_unit, 
             "delete-unit" : self.delete_unit, 
         }
@@ -126,3 +127,11 @@ class UnitView(APIView):
     #delete unit 
     def delete_unit(self, request, id, instance=None): 
         return delete_element(Unit, id)
+    
+
+    #show units by course 
+    def show_units_by_course(self, request, id, instance=None): 
+        course = get_object_or_404(Course, id=id)
+        units = Unit.objects.filter(course=course)
+        serializer = UnitSerializer(units, many=True)
+        return Response({"units" : serializer.data}, status=status.HTTP_200_OK)
