@@ -131,10 +131,7 @@ class QuizView(APIView):
     
     #show all the questions per quiz 
     def show_all_questions_per_quiz(self, request, id, instance=None): 
-        print(id)
         quizzes = Quiz.objects.all()
-        ids = [q.id for q in quizzes]
-        print(ids)
         quiz = get_object_or_404(Quiz, id=id)
         questions = Question.objects.filter(quiz=quiz)
         serializer = QuestionSerializer(questions, many=True)
