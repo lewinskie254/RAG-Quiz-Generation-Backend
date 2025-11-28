@@ -265,3 +265,10 @@ class QuizView(APIView):
         quizzes = Quiz.objects.filter(created_by = teacher)
         serializer = QuizSerializer(quizzes, many=True)
         return Response({"quizzes": serializer.data}, status=status.HTTP_200_OK) 
+    
+
+    def show_all_quizzes_from_student_id(self, id, instance=None):
+        student = get_object_or_404(Student, id=id)
+        quizzes = Quiz.objects.filter(school=student.school)
+        serializer = QuizSerializer(quizzes, many=True)
+        return Response({"quizzes": serializer.data}, status=status.HTTP_200_OK)
