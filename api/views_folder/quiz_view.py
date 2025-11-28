@@ -37,6 +37,7 @@ class QuizView(APIView):
             "show-all-quizzes-by-teacher" : self.show_all_quizzes_by_teacher, 
             "show-specific-question": self.show_specific_question, 
             "show-multiple-choices-for-question" : self.show_multiple_choices_for_question, 
+            "show-all-quizzes-from-student-id" : self.show_all_quizzes_from_student_id, 
             "delete-quiz" : self.delete_quiz, 
             "delete-question" : self.delete_question, 
             "delete-multiple-choice" : self.delete_multiple_choice, 
@@ -267,7 +268,7 @@ class QuizView(APIView):
         return Response({"quizzes": serializer.data}, status=status.HTTP_200_OK) 
     
 
-    def show_all_quizzes_from_student_id(self, id, instance=None):
+    def show_all_quizzes_from_student_id(self, request, id, instance=None):
         student = get_object_or_404(Student, id=id)
         quizzes = Quiz.objects.filter(school=student.school)
         serializer = QuizSerializer(quizzes, many=True)

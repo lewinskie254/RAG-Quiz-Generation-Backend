@@ -26,6 +26,7 @@ class StudentView(APIView):
             "show-student-details": self.show_student_details,
             "show-all-students-by-school" : self.show_all_students_by_school, 
             "show-all-students" : self.show_all_students, 
+            "show-all-units-for-student" : self.show_all_units_for_student, 
             "delete-student" : self.delete_student, 
         }
         func = actions.get(action)
@@ -143,3 +144,11 @@ class StudentView(APIView):
     #delete student 
     def delete_student(self, request, id, instance=None): 
         return delete_element(Student, id)
+    
+    #show all the units for a specific student 
+    def show_all_units_for_student(self, request, id, instance=None): 
+        student = get_object_or_404(Student, id=id)
+        units = Unit.objects.filter(course=student.course)
+        serializer = UnitSerializer(units, many=True)
+        return Response({"units" : serializer.data}, status=status.HTTP_200_OK) 
+    
