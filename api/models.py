@@ -98,12 +98,6 @@ class Unit(models.Model):
     )
     total_score = models.IntegerField(default=100)  # still recommended to remove
 
-class StudentUnitScore(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
-    score = models.IntegerField(default=0)
-
 
 class Quiz(models.Model): 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -116,6 +110,13 @@ class Quiz(models.Model):
     number_of_questions = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     school = models.ForeignKey(School, on_delete=models.CASCADE, null=True)
+
+class StudentUnitScore(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
+    quizzes = models.ManyToManyField(Quiz)
+    score = models.IntegerField(default=0)
 
 
 class Question(models.Model): 

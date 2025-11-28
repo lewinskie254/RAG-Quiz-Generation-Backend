@@ -26,7 +26,7 @@ class TeacherView(APIView):
         actions = {
             "show-all-teachers": self.show_all_teachers,
             "show-teachers-by-school" : self.show_teachers_by_school, 
-            "show-specific-teachers" : self.show_specific_teachers, 
+            "show-specific-teacher" : self.show_specific_teacher, 
             "delete-teacher" : self.delete_teacher, 
         }
         func = actions.get(action)
@@ -120,7 +120,7 @@ class TeacherView(APIView):
         return Response({"teachers" : serializer.data}, status=status.HTTP_200_OK)
 
     #fetch a specific teacher 
-    def show_specific_teachers(self, request, id, instance=None): 
+    def show_specific_teacher(self, request, id, instance=None): 
         teacher = get_object_or_404(Teacher, id=id)
         serializer = TeacherSerializer(teacher)
         return Response({"teacher" : serializer.data}, status=status.HTTP_200_OK)
