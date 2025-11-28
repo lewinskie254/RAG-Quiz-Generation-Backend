@@ -34,6 +34,7 @@ class QuizView(APIView):
             "show-all-questions-per-quiz": self.show_all_questions_per_quiz, 
             "show-specific-quiz" : self.show_specific_quiz, 
             "show-all-quizzes-per-unit" : self.show_all_quizzes_per_unit, 
+            "show-all-quizzes-by-teacher" : self.show_all_quizzes_by_teacher, 
             "show-specific-question": self.show_specific_question, 
             "show-multiple-choices-for-question" : self.show_multiple_choices_for_question, 
             "delete-quiz" : self.delete_quiz, 
@@ -256,5 +257,11 @@ class QuizView(APIView):
     def show_all_quizzes_per_unit(self, request, id, instance=None): 
         unit = get_object_or_404(Unit, id=id)
         quizzes = Quiz.objects.filter(unit=unit)
+        serializer = QuizSerializer(quizzes, many=True)
+        return Response({"quizzes": serializer.data}, status=status.HTTP_200_OK) 
+    
+    def show_all_quizzes_by_teacher(self, request, id, instance=None): 
+        teacher = get_object_or_404(Teacher, id=id)
+        quizzes = Quiz.objects.filter(created_by = teacher)
         serializer = QuizSerializer(quizzes, many=True)
         return Response({"quizzes": serializer.data}, status=status.HTTP_200_OK) 
