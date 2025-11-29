@@ -39,8 +39,6 @@ class StudentView(APIView):
     
     #add a new student 
     def add_new_student(self, request, id=None, instance=None): 
-
-        print("Data sent",  request.data)
         course = get_object_or_404(Course, id=request.data.get("course"))
         school = get_object_or_404(School, id=request.data.get("school"))
         username = request.data.get("username")

@@ -1,6 +1,6 @@
 # my_app/urls.py
 from django.urls import path
-from .views import StudentView, SchoolView, CourseView, TeacherView, QuizView, UnitView
+from .views import StudentView, SchoolView, CourseView, TeacherView, QuizView, UnitView, LoginView
 
 app_name = 'api' 
 urlpatterns = [
@@ -17,4 +17,5 @@ urlpatterns = [
     path('quiz/<str:action>/', QuizView.as_view(), name='add-quiz'), 
     path('quiz/<str:action>/<str:id>/', QuizView.as_view(), name='quiz-details'), 
     path('quiz/<str:action>/<str:id>/<str:instance>/', QuizView.as_view(), name='generate-and-set-quiz'), 
+    path('login/<str:action>/', LoginView.as_view(), name='login')
 ]
