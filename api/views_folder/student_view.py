@@ -73,7 +73,6 @@ class StudentView(APIView):
         serializer = StudentSerializer(data=data)
         if serializer.is_valid():
             student = serializer.save()
-            print("user created")
             return Response({"message": f"Student {student.name} added successfully"}, status=201)
         else:
             return Response(serializer.errors, status=400)
