@@ -5,7 +5,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from ..models import Course, Student, School
 from ..serializers import *
-from ..utils import serializer_checker, delete_element
+from ..utils import delete_element
 
 class StudentView(APIView): 
     def post(self, request, action, id=None, instance=None):
