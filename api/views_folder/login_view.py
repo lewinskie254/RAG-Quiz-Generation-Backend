@@ -28,16 +28,29 @@ class LoginView(APIView):
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
-            return Response({"message": "Invalid username or password"}, status=401)
+            return Response({"message": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
 
         if not check_password(password, user.password):
-            return Response({"message": "Invalid username or password"}, status=401)
+            return Response({"message": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
 
         # Generate JWT token
         refresh = RefreshToken.for_user(user)
         serializer = UserSerializer(user)
+
+
+        # Detect profile
+        student_id = None
+        teacher_id = None
+
+        if hasattr(user, "student_profile"):
+            student_id = user.student_profile.id
+
+        if hasattr(user, "teacher_profile"):
+            teacher_id = user.teacher_profile.id
         return Response({
             "user" : serializer.data, 
+            "student_id": student_id,
+            "teacher_id": teacher_id,
             "refresh": str(refresh),
             "access": str(refresh.access_token),
         })
