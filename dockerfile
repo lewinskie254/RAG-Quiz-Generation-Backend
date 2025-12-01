@@ -10,7 +10,6 @@ WORKDIR /app
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
-    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip first
@@ -18,7 +17,6 @@ RUN pip install --upgrade pip
 
 # Copy and install Python dependencies
 COPY requirements.txt .
-# Remove langchain-textsplitters from requirements.txt if present
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project code
@@ -29,6 +27,6 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Expose Django port
-EXPOSE 8080
+EXPOSE 8000
 
 ENTRYPOINT ["/entrypoint.sh"]
