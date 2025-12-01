@@ -25,7 +25,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = ['dashboard.eventplannersalliance.com']
+ALLOWED_HOSTS = ['http://dashboard.eventplannersalliance.com', 'http://4.221.196.98/']
 
 
 # Application definition
