@@ -1,5 +1,4 @@
-# ---- Base Image ----
-FROM python:3.12-slim
+FROM python:3.11-slim 
 
 # Prevent Python from writing .pyc files and buffering logs
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -14,8 +13,12 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Upgrade pip first
+RUN pip install --upgrade pip
+
+# Copy and install Python dependencies
 COPY requirements.txt .
+# Remove langchain-textsplitters from requirements.txt if present
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project code
@@ -26,6 +29,6 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Expose Django port
-EXPOSE 8000
+EXPOSE 8080
 
 ENTRYPOINT ["/entrypoint.sh"]
