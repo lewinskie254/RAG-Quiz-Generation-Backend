@@ -154,3 +154,10 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+# Directory where collectstatic will put static files
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# URL to access static files
+STATIC_URL = "/static/"
